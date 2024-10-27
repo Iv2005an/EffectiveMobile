@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "EffectiveMobileConsole": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    },
+    "EffectiveMobileConsoleCity": {
+      "commandName": "Project",
+      "commandLineArgs": "_cityDistrict 4"
+    },
+    "EffectiveMobileConsoleCityAndTime": {
+      "commandName": "Project",
+      "commandLineArgs": "_cityDistrict 4 _firstDeliveryDateTime \"2024-09-01 12:00:00\""
+    }
+  }
+}
