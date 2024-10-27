@@ -1,6 +1,4 @@
-﻿using EffectiveMobileConsole.Exceptions;
-
-namespace EffectiveMobileConsole.Services;
+﻿namespace EffectiveMobileConsole.Services;
 
 public class ArgsParser
 {
@@ -12,37 +10,22 @@ public class ArgsParser
             {
                 case _cityDistrictArgName:
                     string cityDistrictS = args[++i];
-                    try
-                    {
-                        CityDistrict = Convert.ToInt32(cityDistrictS);
-                        break;
-                    }
-                    catch { throw new ArgsParserException($"Invalid city district index{cityDistrictS}"); }
+                    try { _cityDistrict = Convert.ToInt32(cityDistrictS); break; }
+                    catch { throw new Exception($"Invalid city district index{cityDistrictS}"); }
                 case _firstDeliveryDateTimeArgName:
                     string dateTimeS = args[++i];
-                    try
-                    {
-                        string[] dateTime = dateTimeS.Split();
-                        string dateS = dateTime[0];
-                        string timeS = dateTime[1];
-                        string[] date = dateS.Split('-');
-                        string[] time = timeS.Split(':');
-                        FirstDeliveryDateTime = new DateTime(
-                            Convert.ToInt32(date[0]),
-                            Convert.ToInt32(date[1]),
-                            Convert.ToInt32(date[2]),
-                            Convert.ToInt32(time[0]),
-                            Convert.ToInt32(time[1]),
-                            Convert.ToInt32(time[2])
-                            );
-                    }
-                    catch { throw new ArgsParserException($"Invalid date time format {dateTimeS}"); }
+                    try { _firstDeliveryDateTime = DateTime.Parse(dateTimeS); }
+                    catch { throw new Exception($"Invalid date time format {dateTimeS}"); }
                     break;
                 case _deliveryLogArgName: DeliveryLog = CheckPath(args[++i]); break;
                 case _deliveryOrderArgName: DeliveryOrder = CheckPath(args[++i]); break;
-                default: throw new ArgsParserException($"Invalid parameter {args[i]}");
+                default: throw new Exception($"Invalid parameter {args[i]}");
             }
         }
+        if (_cityDistrict is null)
+            throw new Exception($"Required argument {_cityDistrictArgName} is missing");
+        if (_firstDeliveryDateTime is null)
+            throw new Exception($"Required argument {_firstDeliveryDateTimeArgName} is missing");
     }
 
     const string _cityDistrictArgName = "_cityDistrict";
@@ -50,9 +33,11 @@ public class ArgsParser
     const string _deliveryLogArgName = "_deliveryLog";
     const string _deliveryOrderArgName = "_deliveryOrder";
 
-    public int? CityDistrict { get; }
-    public DateTime? FirstDeliveryDateTime { get; }
-    public string? FirstDeliveryDateTimeString { get => FirstDeliveryDateTime?.ToString("yyyy-MM-dd HH:mm:ss"); }
+    readonly int? _cityDistrict;
+    readonly DateTime? _firstDeliveryDateTime;
+
+    public int CityDistrict => _cityDistrict ?? 0;
+    public DateTime FirstDeliveryDateTime => _firstDeliveryDateTime ?? DateTime.MinValue;
     public string? DeliveryLog { get; }
     public string? DeliveryOrder { get; }
 
@@ -60,7 +45,7 @@ public class ArgsParser
     {
         path = Path.GetFullPath(path);
         if (!Directory.Exists(path))
-            throw new ArgsParserException($"Invalid path {path}");
+            throw new Exception($"Invalid path: {path}");
         return path;
     }
 }

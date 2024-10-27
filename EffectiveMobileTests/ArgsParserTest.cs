@@ -1,4 +1,3 @@
-using EffectiveMobileConsole.Exceptions;
 using EffectiveMobileConsole.Services;
 
 namespace EffectiveMobileTests;
@@ -18,13 +17,13 @@ public class ArgsParserTest
             "_deliveryLog", deliveryLog,
             "_deliveryOrder", deliveryOrder,]);
         Assert.Equal(cityDistrict, parser.CityDistrict.ToString());
-        Assert.Equal(firstDeliveryDateTime, parser.FirstDeliveryDateTimeString);
+        Assert.Equal(firstDeliveryDateTime, parser.FirstDeliveryDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
         Assert.Equal(deliveryLog, parser.DeliveryLog);
         Assert.Equal(deliveryOrder, parser.DeliveryOrder);
     }
     [Fact]
     public void TestParsing_InvalidÑityDistrict() =>
-    Assert.Throws<ArgsParserException>(() =>
+    Assert.Throws<Exception>(() =>
     {
         string firstDeliveryDateTime = "2024-10-25 23:34:23";
         string deliveryLog = "C:\\";
@@ -37,7 +36,7 @@ public class ArgsParserTest
     });
     [Fact]
     public void TestParsing_InvalidDateTime() =>
-    Assert.Throws<ArgsParserException>(() =>
+    Assert.Throws<Exception>(() =>
     {
         string cityDistrict = "1";
         string firstDeliveryDateTime = "2024-10-25 24:34:23";
@@ -51,7 +50,7 @@ public class ArgsParserTest
     });
     [Fact]
     public void TestParsing_InvalidPath() =>
-    Assert.Throws<ArgsParserException>(() =>
+    Assert.Throws<Exception>(() =>
     {
         string cityDistrict = "1";
         string firstDeliveryDateTime = "2024-10-25 23:34:23";
