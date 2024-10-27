@@ -15,7 +15,7 @@ public static class LogService
         set
         {
             string path = Path.GetFullPath(value);
-            if (File.Exists(path)) logPath = path;
+            if (Directory.Exists(path)) logPath = path;
             else throw new Exception($"Invalid path {path}");
         }
     }
