@@ -6,7 +6,7 @@ internal static class PrintService
     {
         ConsoleColor baseColor = Console.ForegroundColor;
         Console.ForegroundColor = foregroundColor;
-        Console.Write(message);
+        Console.WriteLine(message);
         Console.ForegroundColor = baseColor;
     }
     public static void PrintInfoMessage(string message) => PrintMessage(message, ConsoleColor.Blue);
